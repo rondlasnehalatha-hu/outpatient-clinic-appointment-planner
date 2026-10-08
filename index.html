@@ -9,7 +9,6 @@
     <title>Outpatient Clinic Appointment Planner</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,12 +17,14 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f4f7fb;
+            background-color: #f4f7fb;
             color: #333;
         }
 
+        /* Header */
+
         header {
-            background: #2563eb;
+            background-color: #2563eb;
             color: white;
             text-align: center;
             padding: 25px;
@@ -33,8 +34,10 @@
             margin-bottom: 8px;
         }
 
+        /* Navigation */
+
         nav {
-            background: #1e293b;
+            background-color: #1e293b;
             padding: 15px;
             text-align: center;
         }
@@ -43,7 +46,7 @@
             background: none;
             border: none;
             color: white;
-            margin: 0 15px;
+            margin: 5px 15px;
             font-size: 16px;
             cursor: pointer;
         }
@@ -52,10 +55,12 @@
             color: #93c5fd;
         }
 
+        /* Pages */
+
         .page {
             display: none;
             width: 90%;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 30px auto;
         }
 
@@ -63,11 +68,13 @@
             display: block;
         }
 
+        /* Home */
+
         .home-box {
-            background: white;
-            padding: 50px;
+            background-color: white;
+            padding: 60px 30px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 3px 10px #ccc;
         }
 
@@ -76,20 +83,29 @@
             margin-bottom: 15px;
         }
 
+        .home-box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        /* Cards */
+
         .card {
-            background: white;
+            background-color: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px #ccc;
             max-width: 600px;
             margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #ccc;
         }
 
         h2 {
             color: #2563eb;
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 25px;
         }
+
+        /* Form */
 
         form {
             display: flex;
@@ -104,66 +120,97 @@
         input,
         select {
             padding: 12px;
-            margin-top: 5px;
+            margin-top: 6px;
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 15px;
         }
 
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
         .book-btn {
-            background: #2563eb;
+            background-color: #2563eb;
             color: white;
             border: none;
-            padding: 12px;
-            margin-top: 20px;
+            padding: 13px;
+            margin-top: 22px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
         }
 
         .book-btn:hover {
-            background: #1d4ed8;
+            background-color: #1d4ed8;
         }
+
+        /* Doctors */
 
         .doctor-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(200px, 1fr)
+            );
+
             gap: 20px;
         }
 
         .doctor-card {
-            background: white;
+            background-color: white;
             padding: 25px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 3px 10px #ccc;
         }
 
         .doctor-card h3 {
             color: #2563eb;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .doctor-card .specialty {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .doctor-card p {
+            margin-bottom: 5px;
+        }
+
+        /* Schedule */
+
+        .table-container {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background-color: white;
         }
 
         th,
         td {
-            padding: 12px;
+            padding: 13px;
             border: 1px solid #ddd;
             text-align: center;
         }
 
         th {
-            background: #2563eb;
+            background-color: #2563eb;
             color: white;
         }
 
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
         .cancel-btn {
-            background: #dc2626;
+            background-color: #dc2626;
             color: white;
             border: none;
             padding: 8px 12px;
@@ -172,7 +219,7 @@
         }
 
         .cancel-btn:hover {
-            background: #b91c1c;
+            background-color: #b91c1c;
         }
 
         #noAppointments {
@@ -181,13 +228,17 @@
             color: #777;
         }
 
+        /* Footer */
+
         footer {
             margin-top: 40px;
             padding: 20px;
-            background: #1e293b;
+            background-color: #1e293b;
             color: white;
             text-align: center;
         }
+
+        /* Mobile */
 
         @media (max-width: 600px) {
 
@@ -196,26 +247,36 @@
                 font-size: 14px;
             }
 
+            .page {
+                width: 95%;
+            }
+
             table {
                 font-size: 12px;
             }
 
             th,
             td {
-                padding: 7px;
+                padding: 8px;
             }
-        }
 
+        }
     </style>
 </head>
+
 
 <body>
 
     <!-- HEADER -->
 
     <header>
+
         <h1>🏥 Outpatient Clinic</h1>
-        <p>Appointment Planner</p>
+
+        <p>
+            Appointment Planner
+        </p>
+
     </header>
 
 
@@ -248,14 +309,14 @@
 
         <div class="home-box">
 
-            <h2>Welcome to Outpatient Clinic</h2>
+            <h2>
+                Welcome to Outpatient Clinic
+            </h2>
 
             <p>
-                Easily manage patient appointments
-                and doctor schedules.
+                Book appointments with our specialist
+                doctors quickly and easily.
             </p>
-
-            <br>
 
             <button
                 class="book-btn"
@@ -276,11 +337,16 @@
 
         <div class="card">
 
-            <h2>Book an Appointment</h2>
+            <h2>
+                Book an Appointment
+            </h2>
 
             <form id="appointmentForm">
 
-                <label>
+
+                <!-- Patient -->
+
+                <label for="patientName">
                     Patient Name
                 </label>
 
@@ -292,40 +358,44 @@
                 >
 
 
-                <label>
-                    Select Doctor
+                <!-- Doctor -->
+
+                <label for="doctor">
+                    Select Specialist Doctor
                 </label>
 
                 <select id="doctor" required>
 
                     <option value="">
-                        -- Select Doctor --
+                        -- Select Specialist --
                     </option>
 
-                    <option value="Dr. Sneha">
-                        Dr. Sneha
+                    <option value="Dr. Sneha - Cardiologist">
+                        ❤️ Dr. Sneha - Cardiologist
                     </option>
 
-                    <option value="Dr. Lasya">
-                        Dr. Lasya
+                    <option value="Dr. Lasya - Dermatologist">
+                        🩺 Dr. Lasya - Dermatologist
                     </option>
 
-                    <option value="Dr. Janu">
-                        Dr. Janu
+                    <option value="Dr. Janu - Pediatrician">
+                        👶 Dr. Janu - Pediatrician
                     </option>
 
-                    <option value="Dr. Likhitha">
-                        Dr. Likhitha
+                    <option value="Dr. Likhitha - Neurologist">
+                        🧠 Dr. Likhitha - Neurologist
                     </option>
 
-                    <option value="Dr. Ananya">
-                        Dr. Ananya
+                    <option value="Dr. Ananya - Gynecologist">
+                        👩‍⚕️ Dr. Ananya - Gynecologist
                     </option>
 
                 </select>
 
 
-                <label>
+                <!-- Date -->
+
+                <label for="date">
                     Appointment Date
                 </label>
 
@@ -336,7 +406,9 @@
                 >
 
 
-                <label>
+                <!-- Time -->
+
+                <label for="time">
                     Appointment Time
                 </label>
 
@@ -346,6 +418,8 @@
                     required
                 >
 
+
+                <!-- Submit -->
 
                 <button
                     type="submit"
@@ -366,63 +440,108 @@
 
     <section id="doctors" class="page">
 
-        <h2>Available Doctors</h2>
+        <h2>
+            Our Specialist Doctors
+        </h2>
+
 
         <div class="doctor-grid">
 
+
+            <!-- Sneha -->
+
             <div class="doctor-card">
 
-                <h3>Dr. Sneha</h3>
+                <h3>
+                    ❤️ Dr. Sneha
+                </h3>
+
+                <p class="specialty">
+                    Cardiologist
+                </p>
 
                 <p>
-                    General Physician
+                    Heart & Blood Pressure Specialist
                 </p>
 
             </div>
 
 
+            <!-- Lasya -->
+
             <div class="doctor-card">
 
-                <h3>Dr. Lasya</h3>
+                <h3>
+                    🩺 Dr. Lasya
+                </h3>
+
+                <p class="specialty">
+                    Dermatologist
+                </p>
 
                 <p>
-                    General Physician
+                    Skin & Hair Specialist
                 </p>
 
             </div>
 
 
+            <!-- Janu -->
+
             <div class="doctor-card">
 
-                <h3>Dr. Janu</h3>
+                <h3>
+                    👶 Dr. Janu
+                </h3>
+
+                <p class="specialty">
+                    Pediatrician
+                </p>
 
                 <p>
-                    General Physician
+                    Child Health Specialist
                 </p>
 
             </div>
 
 
+            <!-- Likhitha -->
+
             <div class="doctor-card">
 
-                <h3>Dr. Likhitha</h3>
+                <h3>
+                    🧠 Dr. Likhitha
+                </h3>
+
+                <p class="specialty">
+                    Neurologist
+                </p>
 
                 <p>
-                    General Physician
+                    Brain & Nervous System Specialist
                 </p>
 
             </div>
 
 
+            <!-- Ananya -->
+
             <div class="doctor-card">
 
-                <h3>Dr. Ananya</h3>
+                <h3>
+                    👩‍⚕️ Dr. Ananya
+                </h3>
+
+                <p class="specialty">
+                    Gynecologist
+                </p>
 
                 <p>
-                    General Physician
+                    Women's Health Specialist
                 </p>
 
             </div>
+
 
         </div>
 
@@ -433,33 +552,52 @@
 
     <section id="schedule" class="page">
 
-        <h2>Appointment Schedule</h2>
+        <h2>
+            Appointment Schedule
+        </h2>
 
-        <table>
 
-            <thead>
+        <div class="table-container">
 
-                <tr>
+            <table>
 
-                    <th>Patient</th>
+                <thead>
 
-                    <th>Doctor</th>
+                    <tr>
 
-                    <th>Date</th>
+                        <th>
+                            Patient
+                        </th>
 
-                    <th>Time</th>
+                        <th>
+                            Doctor
+                        </th>
 
-                    <th>Action</th>
+                        <th>
+                            Date
+                        </th>
 
-                </tr>
+                        <th>
+                            Time
+                        </th>
 
-            </thead>
+                        <th>
+                            Action
+                        </th>
 
-            <tbody id="appointmentList">
+                    </tr>
 
-            </tbody>
+                </thead>
 
-        </table>
+
+                <tbody id="appointmentList">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
 
         <p id="noAppointments">
             No appointments scheduled.
@@ -483,7 +621,9 @@
 
     <script>
 
-        // Store appointments
+        // ==========================================
+        // LOAD SAVED APPOINTMENTS
+        // ==========================================
 
         let appointments =
             JSON.parse(
@@ -491,12 +631,42 @@
             ) || [];
 
 
-        // Show different pages
+        // ==========================================
+        // SET MINIMUM DATE TO TODAY
+        // ==========================================
+
+        const dateInput =
+            document.getElementById("date");
+
+        const today =
+            new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(2, "0");
+
+        dateInput.min =
+            `${year}-${month}-${day}`;
+
+
+        // ==========================================
+        // SHOW PAGE
+        // ==========================================
 
         function showPage(pageId) {
 
             const pages =
                 document.querySelectorAll(".page");
+
 
             pages.forEach(function(page) {
 
@@ -504,10 +674,15 @@
 
             });
 
-            document
-                .getElementById(pageId)
-                .classList.add("active");
 
+            const selectedPage =
+                document.getElementById(pageId);
+
+
+            selectedPage.classList.add("active");
+
+
+            // Refresh schedule
 
             if (pageId === "schedule") {
 
@@ -518,163 +693,193 @@
         }
 
 
-        // Appointment form
+        // ==========================================
+        // BOOK APPOINTMENT
+        // ==========================================
 
         document
             .getElementById("appointmentForm")
-            .addEventListener("submit", function(event) {
+            .addEventListener(
+                "submit",
+                function(event) {
 
-                event.preventDefault();
-
-
-                const patient =
-                    document
-                    .getElementById("patientName")
-                    .value;
+                    event.preventDefault();
 
 
-                const doctor =
-                    document
-                    .getElementById("doctor")
-                    .value;
+                    const patient =
+                        document
+                        .getElementById("patientName")
+                        .value
+                        .trim();
 
 
-                const date =
-                    document
-                    .getElementById("date")
-                    .value;
+                    const doctor =
+                        document
+                        .getElementById("doctor")
+                        .value;
 
 
-                const time =
-                    document
-                    .getElementById("time")
-                    .value;
+                    const date =
+                        document
+                        .getElementById("date")
+                        .value;
 
 
-                // Check duplicate appointment
+                    const time =
+                        document
+                        .getElementById("time")
+                        .value;
 
-                const alreadyBooked =
-                    appointments.some(function(item) {
 
-                        return (
-                            item.doctor === doctor &&
-                            item.date === date &&
-                            item.time === time
+                    // Check if doctor already booked
+
+                    const alreadyBooked =
+                        appointments.some(
+                            function(appointment) {
+
+                                return (
+                                    appointment.doctor === doctor &&
+                                    appointment.date === date &&
+                                    appointment.time === time
+                                );
+
+                            }
                         );
 
-                    });
+
+                    if (alreadyBooked) {
+
+                        alert(
+                            "This doctor already has an appointment at this date and time."
+                        );
+
+                        return;
+
+                    }
 
 
-                if (alreadyBooked) {
+                    // Create appointment object
 
-                    alert(
-                        "This doctor already has an appointment at this time."
+                    const newAppointment = {
+
+                        patient: patient,
+
+                        doctor: doctor,
+
+                        date: date,
+
+                        time: time
+
+                    };
+
+
+                    // Add appointment
+
+                    appointments.push(
+                        newAppointment
                     );
 
-                    return;
+
+                    // Save appointment
+
+                    localStorage.setItem(
+                        "appointments",
+                        JSON.stringify(
+                            appointments
+                        )
+                    );
+
+
+                    // Success message
+
+                    alert(
+                        "Appointment booked successfully!"
+                    );
+
+
+                    // Clear form
+
+                    document
+                        .getElementById(
+                            "appointmentForm"
+                        )
+                        .reset();
+
+
+                    // Show schedule
+
+                    showPage("schedule");
 
                 }
+            );
 
 
-                // Create appointment
-
-                const appointment = {
-
-                    patient: patient,
-
-                    doctor: doctor,
-
-                    date: date,
-
-                    time: time
-
-                };
-
-
-                appointments.push(appointment);
-
-
-                // Save to LocalStorage
-
-                localStorage.setItem(
-                    "appointments",
-                    JSON.stringify(appointments)
-                );
-
-
-                alert(
-                    "Appointment booked successfully!"
-                );
-
-
-                // Clear form
-
-                document
-                    .getElementById("appointmentForm")
-                    .reset();
-
-
-                // Open schedule page
-
-                showPage("schedule");
-
-            });
-
-
-        // Display appointments
+        // ==========================================
+        // DISPLAY APPOINTMENTS
+        // ==========================================
 
         function displayAppointments() {
 
-            const list =
+            const appointmentList =
                 document.getElementById(
                     "appointmentList"
                 );
 
 
-            const message =
+            const noAppointments =
                 document.getElementById(
                     "noAppointments"
                 );
 
 
-            list.innerHTML = "";
+            appointmentList.innerHTML = "";
 
 
-            if (appointments.length === 0) {
+            // No appointments
 
-                message.style.display = "block";
+            if (
+                appointments.length === 0
+            ) {
+
+                noAppointments.style.display =
+                    "block";
 
                 return;
 
             }
 
 
-            message.style.display = "none";
+            noAppointments.style.display =
+                "none";
 
+
+            // Display each appointment
 
             appointments.forEach(
-                function(item, index) {
+                function(appointment, index) {
 
                     const row =
-                        document.createElement("tr");
+                        document.createElement(
+                            "tr"
+                        );
 
 
                     row.innerHTML = `
 
                         <td>
-                            ${item.patient}
+                            ${appointment.patient}
                         </td>
 
                         <td>
-                            ${item.doctor}
+                            ${appointment.doctor}
                         </td>
 
                         <td>
-                            ${item.date}
+                            ${appointment.date}
                         </td>
 
                         <td>
-                            ${item.time}
+                            ${appointment.time}
                         </td>
 
                         <td>
@@ -692,7 +897,9 @@
                     `;
 
 
-                    list.appendChild(row);
+                    appointmentList.appendChild(
+                        row
+                    );
 
                 }
             );
@@ -700,28 +907,39 @@
         }
 
 
-        // Cancel appointment
+        // ==========================================
+        // CANCEL APPOINTMENT
+        // ==========================================
 
         function cancelAppointment(index) {
 
-            const confirmCancel =
+            const result =
                 confirm(
                     "Are you sure you want to cancel this appointment?"
                 );
 
 
-            if (confirmCancel) {
+            if (result) {
 
-                appointments.splice(index, 1);
+                appointments.splice(
+                    index,
+                    1
+                );
 
 
                 localStorage.setItem(
                     "appointments",
-                    JSON.stringify(appointments)
+                    JSON.stringify(
+                        appointments
+                    )
                 );
 
 
                 displayAppointments();
+
+                alert(
+                    "Appointment cancelled successfully."
+                );
 
             }
 
@@ -732,3 +950,4 @@
 </body>
 
 </html>
+```
