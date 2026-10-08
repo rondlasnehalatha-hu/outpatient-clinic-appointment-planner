@@ -1,256 +1,734 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Outpatient Clinic Appointment Planner</title>
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        header {
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        nav {
+            background: #1e293b;
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            margin: 0 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        nav button:hover {
+            color: #93c5fd;
+        }
+
+        .page {
+            display: none;
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .home-box {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #ccc;
+        }
+
+        .home-box h2 {
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #ccc;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .book-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .book-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .doctor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .doctor-card {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px #ccc;
+        }
+
+        .doctor-card h3 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: #b91c1c;
+        }
+
+        #noAppointments {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #1e293b;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+
+            nav button {
+                margin: 5px;
+                font-size: 14px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 7px;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <header class="header">
-        <div>
-            <h1>🏥 Outpatient Clinic</h1>
-            <p>Appointment Planner</p>
-        </div>
+    <!-- HEADER -->
 
-        <button class="add-btn" onclick="openModal()">
-            + Add Appointment
-        </button>
+    <header>
+        <h1>🏥 Outpatient Clinic</h1>
+        <p>Appointment Planner</p>
     </header>
 
-    <main class="container">
 
-        <!-- Statistics -->
-        <section class="stats">
+    <!-- NAVIGATION -->
 
-            <div class="stat-card">
-                <div class="stat-icon blue">📅</div>
-                <div>
-                    <h3 id="totalCount">0</h3>
-                    <p>Total Appointments</p>
-                </div>
-            </div>
+    <nav>
 
-            <div class="stat-card">
-                <div class="stat-icon orange">⏳</div>
-                <div>
-                    <h3 id="waitingCount">0</h3>
-                    <p>Waiting</p>
-                </div>
-            </div>
+        <button onclick="showPage('home')">
+            Home
+        </button>
 
-            <div class="stat-card">
-                <div class="stat-icon purple">🩺</div>
-                <div>
-                    <h3 id="progressCount">0</h3>
-                    <p>In Progress</p>
-                </div>
-            </div>
+        <button onclick="showPage('appointment')">
+            Book Appointment
+        </button>
 
-            <div class="stat-card">
-                <div class="stat-icon green">✓</div>
-                <div>
-                    <h3 id="completeCount">0</h3>
-                    <p>Completed</p>
-                </div>
-            </div>
+        <button onclick="showPage('doctors')">
+            Doctors
+        </button>
 
-        </section>
+        <button onclick="showPage('schedule')">
+            Schedule
+        </button>
 
-        <!-- Filters -->
-        <section class="filter-box">
+    </nav>
 
-            <div class="filter-group">
-                <label>Search Patient</label>
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search patient..."
-                    oninput="renderAppointments()"
-                >
-            </div>
 
-            <div class="filter-group">
-                <label>Doctor</label>
-                <select id="doctorFilter" onchange="renderAppointments()">
-                    <option value="All">All Doctors</option>
-                    <option value="Sneha">Dr. Sneha</option>
-                    <option value="Madhu">Dr. Madhu</option>
-                    <option value="Gopi">Dr. Gopi</option>
-                    <option value="Janu">Dr. Janu</option>
-                    <option value="Deekshi">Dr. Deekshi</option>
-                </select>
-            </div>
+    <!-- HOME PAGE -->
 
-            <div class="filter-group">
-                <label>Status</label>
-                <select id="statusFilter" onchange="renderAppointments()">
-                    <option value="All">All Status</option>
-                    <option value="Waiting">Waiting</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Complete">Complete</option>
-                </select>
-            </div>
+    <section id="home" class="page active">
 
-            <button class="clear-btn" onclick="clearFilters()">
-                Clear Filters
+        <div class="home-box">
+
+            <h2>Welcome to Outpatient Clinic</h2>
+
+            <p>
+                Easily manage patient appointments
+                and doctor schedules.
+            </p>
+
+            <br>
+
+            <button
+                class="book-btn"
+                onclick="showPage('appointment')">
+
+                Book an Appointment
+
             </button>
 
-        </section>
+        </div>
 
-        <!-- Appointment Board -->
-        <section class="appointment-section">
+    </section>
 
-            <div class="section-title">
-                <div>
-                    <h2>Today's Appointments</h2>
-                    <p>Manage outpatient clinic appointments</p>
-                </div>
 
-                <span id="appointmentNumber" class="appointment-number">
-                    0 appointments
-                </span>
-            </div>
+    <!-- APPOINTMENT PAGE -->
 
-            <div id="appointmentList" class="appointment-list"></div>
+    <section id="appointment" class="page">
 
-        </section>
+        <div class="card">
 
-    </main>
-
-    <!-- Add Appointment Modal -->
-    <div id="appointmentModal" class="modal">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <div>
-                    <h2>Add Appointment</h2>
-                    <p>Create a new patient appointment</p>
-                </div>
-
-                <button class="close-btn" onclick="closeModal()">×</button>
-            </div>
+            <h2>Book an Appointment</h2>
 
             <form id="appointmentForm">
 
-                <div class="form-row">
+                <label>
+                    Patient Name
+                </label>
 
-                    <div class="form-group">
-                        <label>Patient Name</label>
-                        <input
-                            type="text"
-                            id="patientName"
-                            placeholder="Enter patient name"
-                            required
-                        >
-                    </div>
+                <input
+                    type="text"
+                    id="patientName"
+                    placeholder="Enter patient name"
+                    required
+                >
 
-                    <div class="form-group">
-                        <label>Age</label>
-                        <input
-                            type="number"
-                            id="patientAge"
-                            min="1"
-                            max="120"
-                            placeholder="Age"
-                            required
-                        >
-                    </div>
 
-                </div>
+                <label>
+                    Select Doctor
+                </label>
 
-                <div class="form-row">
+                <select id="doctor" required>
 
-                    <div class="form-group">
-                        <label>Doctor</label>
+                    <option value="">
+                        -- Select Doctor --
+                    </option>
 
-                        <select id="doctorName" required>
-                            <option value="">Select Doctor</option>
-                            <option value="Sneha">Dr. Sneha</option>
-                            <option value="Madhu">Dr. Madhu</option>
-                            <option value="Gopi">Dr. Gopi</option>
-                            <option value="Janu">Dr. Janu</option>
-                            <option value="Deekshi">Dr. Deekshi</option>
-                        </select>
-                    </div>
+                    <option value="Dr. Sneha">
+                        Dr. Sneha
+                    </option>
 
-                    <div class="form-group">
-                        <label>Appointment Time</label>
+                    <option value="Dr. Lasya">
+                        Dr. Lasya
+                    </option>
 
-                        <input
-                            type="time"
-                            id="appointmentTime"
-                            required
-                        >
-                    </div>
+                    <option value="Dr. Janu">
+                        Dr. Janu
+                    </option>
 
-                </div>
+                    <option value="Dr. Likhitha">
+                        Dr. Likhitha
+                    </option>
 
-                <div class="form-group">
-                    <label>Reason / Symptoms</label>
+                    <option value="Dr. Ananya">
+                        Dr. Ananya
+                    </option>
 
-                    <input
-                        type="text"
-                        id="reason"
-                        placeholder="e.g. Fever, headache, check-up"
-                        required
-                    >
-                </div>
+                </select>
 
-                <div class="form-group">
-                    <label>Status</label>
 
-                    <select id="appointmentStatus">
+                <label>
+                    Appointment Date
+                </label>
 
-                        <option value="Waiting">
-                            Waiting
-                        </option>
+                <input
+                    type="date"
+                    id="date"
+                    required
+                >
 
-                        <option value="Confirmed">
-                            Confirmed
-                        </option>
 
-                        <option value="In Progress">
-                            In Progress
-                        </option>
+                <label>
+                    Appointment Time
+                </label>
 
-                        <option value="Complete">
-                            Complete
-                        </option>
+                <input
+                    type="time"
+                    id="time"
+                    required
+                >
 
-                    </select>
-                </div>
 
-                <div class="modal-actions">
+                <button
+                    type="submit"
+                    class="book-btn">
 
-                    <button
-                        type="button"
-                        class="cancel-btn"
-                        onclick="closeModal()"
-                    >
-                        Cancel
-                    </button>
+                    Book Appointment
 
-                    <button
-                        type="submit"
-                        class="save-btn"
-                    >
-                        Add Appointment
-                    </button>
-
-                </div>
+                </button>
 
             </form>
 
         </div>
 
-    </div>
+    </section>
 
-    <script src="script.js"></script>
+
+    <!-- DOCTORS PAGE -->
+
+    <section id="doctors" class="page">
+
+        <h2>Available Doctors</h2>
+
+        <div class="doctor-grid">
+
+            <div class="doctor-card">
+
+                <h3>Dr. Sneha</h3>
+
+                <p>
+                    General Physician
+                </p>
+
+            </div>
+
+
+            <div class="doctor-card">
+
+                <h3>Dr. Lasya</h3>
+
+                <p>
+                    General Physician
+                </p>
+
+            </div>
+
+
+            <div class="doctor-card">
+
+                <h3>Dr. Janu</h3>
+
+                <p>
+                    General Physician
+                </p>
+
+            </div>
+
+
+            <div class="doctor-card">
+
+                <h3>Dr. Likhitha</h3>
+
+                <p>
+                    General Physician
+                </p>
+
+            </div>
+
+
+            <div class="doctor-card">
+
+                <h3>Dr. Ananya</h3>
+
+                <p>
+                    General Physician
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCHEDULE PAGE -->
+
+    <section id="schedule" class="page">
+
+        <h2>Appointment Schedule</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Patient</th>
+
+                    <th>Doctor</th>
+
+                    <th>Date</th>
+
+                    <th>Time</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="appointmentList">
+
+            </tbody>
+
+        </table>
+
+        <p id="noAppointments">
+            No appointments scheduled.
+        </p>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 Outpatient Clinic Appointment Planner
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // Store appointments
+
+        let appointments =
+            JSON.parse(
+                localStorage.getItem("appointments")
+            ) || [];
+
+
+        // Show different pages
+
+        function showPage(pageId) {
+
+            const pages =
+                document.querySelectorAll(".page");
+
+            pages.forEach(function(page) {
+
+                page.classList.remove("active");
+
+            });
+
+            document
+                .getElementById(pageId)
+                .classList.add("active");
+
+
+            if (pageId === "schedule") {
+
+                displayAppointments();
+
+            }
+
+        }
+
+
+        // Appointment form
+
+        document
+            .getElementById("appointmentForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+
+                const patient =
+                    document
+                    .getElementById("patientName")
+                    .value;
+
+
+                const doctor =
+                    document
+                    .getElementById("doctor")
+                    .value;
+
+
+                const date =
+                    document
+                    .getElementById("date")
+                    .value;
+
+
+                const time =
+                    document
+                    .getElementById("time")
+                    .value;
+
+
+                // Check duplicate appointment
+
+                const alreadyBooked =
+                    appointments.some(function(item) {
+
+                        return (
+                            item.doctor === doctor &&
+                            item.date === date &&
+                            item.time === time
+                        );
+
+                    });
+
+
+                if (alreadyBooked) {
+
+                    alert(
+                        "This doctor already has an appointment at this time."
+                    );
+
+                    return;
+
+                }
+
+
+                // Create appointment
+
+                const appointment = {
+
+                    patient: patient,
+
+                    doctor: doctor,
+
+                    date: date,
+
+                    time: time
+
+                };
+
+
+                appointments.push(appointment);
+
+
+                // Save to LocalStorage
+
+                localStorage.setItem(
+                    "appointments",
+                    JSON.stringify(appointments)
+                );
+
+
+                alert(
+                    "Appointment booked successfully!"
+                );
+
+
+                // Clear form
+
+                document
+                    .getElementById("appointmentForm")
+                    .reset();
+
+
+                // Open schedule page
+
+                showPage("schedule");
+
+            });
+
+
+        // Display appointments
+
+        function displayAppointments() {
+
+            const list =
+                document.getElementById(
+                    "appointmentList"
+                );
+
+
+            const message =
+                document.getElementById(
+                    "noAppointments"
+                );
+
+
+            list.innerHTML = "";
+
+
+            if (appointments.length === 0) {
+
+                message.style.display = "block";
+
+                return;
+
+            }
+
+
+            message.style.display = "none";
+
+
+            appointments.forEach(
+                function(item, index) {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${item.patient}
+                        </td>
+
+                        <td>
+                            ${item.doctor}
+                        </td>
+
+                        <td>
+                            ${item.date}
+                        </td>
+
+                        <td>
+                            ${item.time}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="cancel-btn"
+                                onclick="cancelAppointment(${index})">
+
+                                Cancel
+
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    list.appendChild(row);
+
+                }
+            );
+
+        }
+
+
+        // Cancel appointment
+
+        function cancelAppointment(index) {
+
+            const confirmCancel =
+                confirm(
+                    "Are you sure you want to cancel this appointment?"
+                );
+
+
+            if (confirmCancel) {
+
+                appointments.splice(index, 1);
+
+
+                localStorage.setItem(
+                    "appointments",
+                    JSON.stringify(appointments)
+                );
+
+
+                displayAppointments();
+
+            }
+
+        }
+
+    </script>
 
 </body>
+
 </html>
