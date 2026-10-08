@@ -621,20 +621,14 @@
 
     <script>
 
-        // ==========================================
-        // LOAD SAVED APPOINTMENTS
-        // ==========================================
-
+      
         let appointments =
             JSON.parse(
                 localStorage.getItem("appointments")
             ) || [];
 
 
-        // ==========================================
-        // SET MINIMUM DATE TO TODAY
-        // ==========================================
-
+       
         const dateInput =
             document.getElementById("date");
 
@@ -657,10 +651,6 @@
         dateInput.min =
             `${year}-${month}-${day}`;
 
-
-        // ==========================================
-        // SHOW PAGE
-        // ==========================================
 
         function showPage(pageId) {
 
@@ -693,10 +683,7 @@
         }
 
 
-        // ==========================================
-        // BOOK APPOINTMENT
-        // ==========================================
-
+       
         document
             .getElementById("appointmentForm")
             .addEventListener(
@@ -814,9 +801,6 @@
             );
 
 
-        // ==========================================
-        // DISPLAY APPOINTMENTS
-        // ==========================================
 
         function displayAppointments() {
 
@@ -906,10 +890,6 @@
 
         }
 
-
-        // ==========================================
-        // CANCEL APPOINTMENT
-        // ==========================================
 
         function cancelAppointment(index) {
 
