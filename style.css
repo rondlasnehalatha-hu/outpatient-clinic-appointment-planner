@@ -1,136 +1,830 @@
-* {
-    box-sizing: border-box;
+// ================================
+// DOCTOR DATA
+// ================================
+
+const doctors = [
+
+    {
+        name: "Dr. Sneha",
+        specialty: "Cardiology"
+    },
+
+    {
+        name: "Dr. Lasya",
+        specialty: "Neurology"
+    },
+
+    {
+        name: "Dr. Janu",
+        specialty: "Dermatology"
+    },
+
+    {
+        name: "Dr. Likhitha",
+        specialty: "Pediatrics"
+    },
+
+    {
+        name: "Dr. Ananya",
+        specialty: "General Medicine"
+    }
+
+];
+
+
+// ================================
+// GET ELEMENTS
+// ================================
+
+const form =
+    document.getElementById("appointmentForm");
+
+const specialty =
+    document.getElementById("specialty");
+
+const doctor =
+    document.getElementById("doctor");
+
+const appointmentTable =
+    document.getElementById("appointmentTable");
+
+const noAppointments =
+    document.getElementById("noAppointments");
+
+const search =
+    document.getElementById("search");
+
+const filterStatus =
+    document.getElementById("filterStatus");
+
+const cancelEdit =
+    document.getElementById("cancelEdit");
+
+
+// ================================
+// LOAD APPOINTMENTS
+// ================================
+
+let appointments =
+    JSON.parse(
+        localStorage.getItem("appointments")
+    ) || [];
+
+
+// ================================
+// SPECIALTY CHANGE
+// ================================
+
+specialty.addEventListener(
+    "change",
+    function () {
+
+        const selectedSpecialty =
+            specialty.value;
+
+        doctor.innerHTML =
+            '<option value="">Select Doctor</option>';
+
+        doctors
+            .filter(
+                d =>
+                    d.specialty ===
+                    selectedSpecialty
+            )
+            .forEach(d => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = d.name;
+
+                option.textContent =
+                    d.name;
+
+                doctor.appendChild(option);
+
+            });
+
+    }
+);
+
+
+// ================================
+// FORM SUBMIT
+// ================================
+
+form.addEventListener(
+    "submit",
+    function (event) {
+
+        event.preventDefault();
+
+        const patientName =
+            document
+                .getElementById("patientName")
+                .value
+                .trim();
+
+        const age =
+            document
+                .getElementById("age")
+                .value;
+
+        const gender =
+            document
+                .getElementById("gender")
+                .value;
+
+        const phone =
+            document
+                .getElementById("phone")
+                .value
+                .trim();
+
+        const selectedSpecialty =
+            specialty.value;
+
+        const selectedDoctor =
+            doctor.value;
+
+        const date =
+            document
+                .getElementById("date")
+                .value;
+
+        const time =
+            document
+                .getElementById("time")
+                .value;
+
+        const reason =
+            document
+                .getElementById("reason")
+                .value
+                .trim();
+
+        const editId =
+            document
+                .getElementById("editId")
+                .value;
+
+
+        // Basic validation
+
+        if (
+            !patientName ||
+            !age ||
+            !gender ||
+            !phone ||
+            !selectedSpecialty ||
+            !selectedDoctor ||
+            !date ||
+            !time ||
+            !reason
+        ) {
+
+            alert(
+                "Please fill all the fields."
+            );
+
+            return;
+
+        }
+
+
+        // Edit existing appointment
+
+        if (editId) {
+
+            const index =
+                appointments.findIndex(
+                    appointment =>
+                        appointment.id ==
+                        editId
+                );
+
+            if (index !== -1) {
+
+                appointments[index] = {
+
+                    id: Number(editId),
+
+                    patientName,
+
+                    age,
+
+                    gender,
+
+                    phone,
+
+                    specialty:
+                        selectedSpecialty,
+
+                    doctor:
+                        selectedDoctor,
+
+                    date,
+
+                    time,
+
+                    reason
+
+                };
+
+            }
+
+            alert(
+                "Appointment updated successfully!"
+            );
+
+        }
+
+
+        // New appointment
+
+        else {
+
+            const appointment = {
+
+                id: Date.now(),
+
+                patientName,
+
+                age,
+
+                gender,
+
+                phone,
+
+                specialty:
+                    selectedSpecialty,
+
+                doctor:
+                    selectedDoctor,
+
+                date,
+
+                time,
+
+                reason
+
+            };
+
+            appointments.push(
+                appointment
+            );
+
+            alert(
+                "Appointment booked successfully!"
+            );
+
+        }
+
+
+        saveAppointments();
+
+        resetForm();
+
+        displayAppointments();
+
+    }
+);
+
+
+// ================================
+// SAVE DATA
+// ================================
+
+function saveAppointments() {
+
+    localStorage.setItem(
+        "appointments",
+        JSON.stringify(appointments)
+    );
+
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    color: #333;
+
+// ================================
+// DISPLAY APPOINTMENTS
+// ================================
+
+function displayAppointments() {
+
+    const searchText =
+        search.value
+            .toLowerCase()
+            .trim();
+
+    const filter =
+        filterStatus.value;
+
+
+    appointmentTable.innerHTML = "";
+
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    const filtered =
+        appointments.filter(
+            appointment => {
+
+                const matchesSearch =
+
+                    appointment.patientName
+                        .toLowerCase()
+                        .includes(searchText)
+
+                    ||
+
+                    appointment.doctor
+                        .toLowerCase()
+                        .includes(searchText)
+
+                    ||
+
+                    appointment.specialty
+                        .toLowerCase()
+                        .includes(searchText);
+
+
+                const matchesFilter =
+
+                    filter === "all"
+
+                    ||
+
+                    (
+                        filter === "Today"
+                        &&
+                        appointment.date === today
+                    );
+
+
+                return (
+                    matchesSearch &&
+                    matchesFilter
+                );
+
+            }
+        );
+
+
+    if (filtered.length === 0) {
+
+        noAppointments.style.display =
+            "block";
+
+    }
+
+    else {
+
+        noAppointments.style.display =
+            "none";
+
+    }
+
+
+    filtered
+        .sort(
+            (a, b) => {
+
+                const first =
+                    `${a.date} ${a.time}`;
+
+                const second =
+                    `${b.date} ${b.time}`;
+
+                return first.localeCompare(
+                    second
+                );
+
+            }
+        )
+        .forEach(appointment => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="patient-name">
+
+                        ${escapeHTML(
+                            appointment.patientName
+                        )}
+
+                    </div>
+
+                    <small>
+
+                        ${appointment.age} years,
+                        ${appointment.gender}
+
+                    </small>
+
+                </td>
+
+
+                <td class="doctor">
+
+                    ${escapeHTML(
+                        appointment.doctor
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        appointment.specialty
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${formatDate(
+                        appointment.date
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${formatTime(
+                        appointment.time
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        appointment.reason
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editAppointment(
+                            ${appointment.id}
+                        )">
+
+                        Edit
+
+                    </button>
+
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteAppointment(
+                            ${appointment.id}
+                        )">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            appointmentTable.appendChild(
+                row
+            );
+
+        });
+
+
+    updateDashboard();
+
 }
 
-header {
-    background: #2563eb;
-    color: white;
-    text-align: center;
-    padding: 25px;
+
+// ================================
+// EDIT APPOINTMENT
+// ================================
+
+function editAppointment(id) {
+
+    const appointment =
+        appointments.find(
+            a => a.id === id
+        );
+
+
+    if (!appointment) return;
+
+
+    document.getElementById(
+        "editId"
+    ).value = appointment.id;
+
+
+    document.getElementById(
+        "patientName"
+    ).value =
+        appointment.patientName;
+
+
+    document.getElementById(
+        "age"
+    ).value =
+        appointment.age;
+
+
+    document.getElementById(
+        "gender"
+    ).value =
+        appointment.gender;
+
+
+    document.getElementById(
+        "phone"
+    ).value =
+        appointment.phone;
+
+
+    specialty.value =
+        appointment.specialty;
+
+
+    specialty.dispatchEvent(
+        new Event("change")
+    );
+
+
+    doctor.value =
+        appointment.doctor;
+
+
+    document.getElementById(
+        "date"
+    ).value =
+        appointment.date;
+
+
+    document.getElementById(
+        "time"
+    ).value =
+        appointment.time;
+
+
+    document.getElementById(
+        "reason"
+    ).value =
+        appointment.reason;
+
+
+    document.querySelector(
+        ".primary-btn"
+    ).textContent =
+        "💾 Update Appointment";
+
+
+    cancelEdit.style.display =
+        "inline-block";
+
+
+    document
+        .getElementById("appointment")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
 }
 
-header h1 {
-    margin: 0;
+
+// ================================
+// DELETE APPOINTMENT
+// ================================
+
+function deleteAppointment(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this appointment?"
+        );
+
+
+    if (!confirmDelete) return;
+
+
+    appointments =
+        appointments.filter(
+            appointment =>
+                appointment.id !== id
+        );
+
+
+    saveAppointments();
+
+    displayAppointments();
+
 }
 
-nav {
-    background: #1e293b;
-    padding: 15px;
-    text-align: center;
+
+// ================================
+// CANCEL EDIT
+// ================================
+
+cancelEdit.addEventListener(
+    "click",
+    function () {
+
+        resetForm();
+
+    }
+);
+
+
+// ================================
+// RESET FORM
+// ================================
+
+function resetForm() {
+
+    form.reset();
+
+    document.getElementById(
+        "editId"
+    ).value = "";
+
+
+    doctor.innerHTML =
+        '<option value="">Select Doctor</option>';
+
+
+    document.querySelector(
+        ".primary-btn"
+    ).textContent =
+        "📅 Book Appointment";
+
+
+    cancelEdit.style.display =
+        "none";
+
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
+
+// ================================
+// SEARCH
+// ================================
+
+search.addEventListener(
+    "input",
+    displayAppointments
+);
+
+
+// ================================
+// FILTER
+// ================================
+
+filterStatus.addEventListener(
+    "change",
+    displayAppointments
+);
+
+
+// ================================
+// DASHBOARD
+// ================================
+
+function updateDashboard() {
+
+    document.getElementById(
+        "totalAppointments"
+    ).textContent =
+        appointments.length;
+
+
+    const uniquePatients =
+        new Set(
+            appointments.map(
+                appointment =>
+                    appointment.phone
+            )
+        );
+
+
+    document.getElementById(
+        "totalPatients"
+    ).textContent =
+        uniquePatients.size;
+
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    const todayCount =
+        appointments.filter(
+            appointment =>
+                appointment.date === today
+        ).length;
+
+
+    document.getElementById(
+        "todayAppointments"
+    ).textContent =
+        todayCount;
+
 }
 
-nav a:hover {
-    color: #93c5fd;
+
+// ================================
+// FORMAT DATE
+// ================================
+
+function formatDate(dateString) {
+
+    const date =
+        new Date(
+            dateString + "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
 }
 
-.container {
-    width: 90%;
-    max-width: 1000px;
-    margin: 30px auto;
+
+// ================================
+// FORMAT TIME
+// ================================
+
+function formatTime(time) {
+
+    const [hours, minutes] =
+        time.split(":");
+
+
+    const date =
+        new Date();
+
+    date.setHours(
+        hours,
+        minutes
+    );
+
+
+    return date.toLocaleTimeString(
+        "en-IN",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
 }
 
-.home {
-    text-align: center;
-    background: white;
-    padding: 50px;
-    border-radius: 10px;
+
+// ================================
+// SECURITY
+// ================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value;
+
+    return div.innerHTML;
+
 }
 
-.button,
-button {
-    display: inline-block;
-    background: #2563eb;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    cursor: pointer;
-    margin-top: 15px;
-}
 
-.card {
-    background: white;
-    padding: 30px;
-    max-width: 600px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px #ccc;
-}
+// ================================
+// INITIAL DISPLAY
+// ================================
 
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 15px;
-    font-weight: bold;
-}
-
-input,
-select {
-    padding: 12px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.doctor-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-}
-
-.doctor-card {
-    background: white;
-    padding: 25px;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px #ccc;
-}
-
-.doctor-card h3 {
-    color: #2563eb;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-}
-
-th,
-td {
-    padding: 15px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-th {
-    background: #2563eb;
-    color: white;
-}
-
-.delete-btn {
-    background: #dc2626;
-    margin: 0;
-}
-
-#emptyMessage {
-    text-align: center;
-    color: #777;
-}
+displayAppointments();
